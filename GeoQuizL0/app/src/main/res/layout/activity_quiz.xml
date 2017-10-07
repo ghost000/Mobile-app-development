@@ -50,13 +50,12 @@ This means, in which direction it's contents should align.
         android:layout_height="wrap_content"
         android:padding="24dp"
         android:id="@+id/question_text_view"
-        android:text="@string/question_stolica_polski"/>
+        android:text="Czy Warszawa jest stolicą Polski?"/>
         <!--
         see:
         https://developer.android.com/guide/topics/resources/more-resources.html#Dimension
         for padding units
         -->
-
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
@@ -100,6 +99,17 @@ This means, in which direction it's contents should align.
         android:id="@+id/next_button"
         android:text="@string/next_button"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:text="Points"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:id="@+id/points"
+        android:text="0"/>
 
 
 </LinearLayout>

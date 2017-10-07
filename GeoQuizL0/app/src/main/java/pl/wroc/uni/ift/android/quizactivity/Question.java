@@ -7,21 +7,30 @@ package pl.wroc.uni.ift.android.quizactivity;
 public class Question {
     private int mTextResId;
     private boolean mAnswerTrue;
-    public Question(int textResId ,  boolean AnswerTrue){
+
+    public Question(int textResId, boolean AnswerTrue) {
         mTextResId = textResId;
         mAnswerTrue = AnswerTrue;
     }
 
-    public int getTextResId(){
+    public int getTextResId() {
         return mTextResId;
-    };
-    public void setTextResId(int textResId){
+    }
+
+
+    public void setTextResId(int textResId) {
         mTextResId = textResId;
-    };
-    public boolean isAnswerTrue(){
+    }
+
+
+    public boolean isAnswerTrue() {
         return mAnswerTrue;
-    };
-    public void setAnswerTrue(boolean AnswerTrue){
+    }
+
+
+    public void setAnswerTrue(boolean AnswerTrue) {
         mAnswerTrue = AnswerTrue;
-    };
+    }
+
+
 }
