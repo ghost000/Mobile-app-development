@@ -2,8 +2,10 @@ package pl.wroc.uni.ift.android.quizactivity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +15,10 @@ public class QuizActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
+    private Button mPrevButton;
+
+    private ImageButton mPrevImgButton;
+
 
     private TextView mQuestionTextView;
 
@@ -65,6 +71,37 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
+        mPrevButton = (Button) findViewById(R.id.previous_button);
+        mPrevButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mCurrentIndex = (mCurrentIndex - 1) % mQuestionsBank.length;
+                        updateQuestion();
+                    }
+                });
+
+        mPrevImgButton = (ImageButton) findViewById(R.id.previous_img_button);
+        mPrevImgButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mCurrentIndex = (mCurrentIndex - 1) % mQuestionsBank.length;
+                        updateQuestion();
+                    }
+                });
+
+        mQuestionTextView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCurrentIndex = (mCurrentIndex + 1) % mQuestionsBank.length;
+                        updateQuestion();
+                    }
+                }
+        );
+
+
         updateQuestion();
     }
 
@@ -83,7 +120,8 @@ public class QuizActivity extends AppCompatActivity {
         } else {
             toastMessageId = R.string.incorrect_toast;
         }
-
-        Toast.makeText(this, toastMessageId, Toast.LENGTH_SHORT).show();
+        Toast toast = Toast.makeText(this, toastMessageId, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, -500);
+        toast.show();
     }
 }
