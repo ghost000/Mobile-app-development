@@ -18,16 +18,16 @@ public class QuizActivity extends AppCompatActivity {
 
     private int mCurrentIndex = 0;
 
-    // na potrzeby własne
-    private int mPoints = 0;
-    private boolean mFlag = false;
-
     private Question[] mQuettionsBank = new Question[]{
             new Question(R.string.question_stolica_polski, true),
             new Question(R.string.question_stolica_dolnego_slaska, false),
             new Question(R.string.question_sniezka, true),
             new Question(R.string.question_wisla, true)
     };
+
+    // na potrzeby własne
+    private int mPoints = 0;
+    private boolean[] mFlag;
 
     //    Bundles are generally used for passing data between various Android activities.
     //    It depends on you what type of values you want to pass, but bundles can hold all
@@ -36,6 +36,7 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFlag = new boolean[mQuettionsBank.length];
         setTitle(R.string.app_name);
         // inflating view objects
         setContentView(R.layout.activity_quiz);
@@ -74,51 +75,37 @@ public class QuizActivity extends AppCompatActivity {
     private void updateQuestion() {
 
         if (mCurrentIndex >= 3) { // zahardkodowane bo nie wiem jak wyciągnąć wielkość mQuettionsBank
-
             mCurrentIndex = 0;
             mPoints = 0;
             mPointsTextView.setText(Integer.toString(mPoints));
-
         } else {
-
             mCurrentIndex++;
-
         }
 
-        mFlag = false;
+        mFlag[mCurrentIndex] = false;
         mQuestionTextView.setText(mQuettionsBank[mCurrentIndex].getTextResId());
     }
 
 
     private void checkAnswer(boolean userPressedTrue) {
 
-        // I know że chyba pasowało by zrobic state machine ale ...  po co to komu?
-
         if (userPressedTrue == mQuettionsBank[mCurrentIndex].isAnswerTrue()) {
-            if (mFlag == false) {
+            if (mFlag[mCurrentIndex] == false) {
                 Toast.makeText(QuizActivity.this,
                         "Correct answer",
                         Toast.LENGTH_LONG).show();
                 mPoints++;
-                mFlag = true;
+                mFlag[mCurrentIndex] = true;
                 mPointsTextView.setText(Integer.toString(mPoints));
-            } else {
-                Toast.makeText(QuizActivity.this,
-                        "Correct answer",
-                        Toast.LENGTH_LONG).show();
             }
         } else {
-            if (mFlag == false) {
+            if (mFlag[mCurrentIndex] == false) {
                 Toast.makeText(QuizActivity.this,
                         "Incorrect answer",
                         Toast.LENGTH_LONG).show();
                 mPoints--;
-                mFlag = true;
+                mFlag[mCurrentIndex] = true;
                 mPointsTextView.setText(Integer.toString(mPoints));
-            } else {
-                Toast.makeText(QuizActivity.this,
-                        "Incorrect answer",
-                        Toast.LENGTH_LONG).show();
             }
 
         }
