@@ -22,7 +22,7 @@ public class QuizActivity extends AppCompatActivity {
     // na potrzeby własne
     private int mPoints = 0;
     private boolean[] mFlag;
-    private boolean[] mClikedFlag;
+    private int mClickedPoint;
     private TextView mPointsTextView;
 
     private TextView mQuestionTextView;
@@ -46,14 +46,12 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         mFlag = new boolean[mQuestionsBank.length];
-        mClikedFlag = new boolean[mQuestionsBank.length];
-        mPointsTextView = (TextView) findViewById(R.id.ClickedButton);
 
         setTitle(R.string.app_name);
         // inflating view objects
         setContentView(R.layout.activity_quiz);
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt("index");
         }
 
@@ -65,7 +63,7 @@ public class QuizActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         checkAnswer(true);
-                        mClikedFlag[mCurrentIndex] = true;
+                        updateQuestion();
                     }
                 }
         );
@@ -76,9 +74,9 @@ public class QuizActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         checkAnswer(false);
-                        mClikedFlag[mCurrentIndex] = false;
-            }
-        });
+                        updateQuestion();
+                    }
+                });
 
         mNextButton = (Button) findViewById(R.id.next_button);
         mNextButton.setOnClickListener(
@@ -95,10 +93,9 @@ public class QuizActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(mCurrentIndex == 0){
+                        if (mCurrentIndex == 0) {
                             mCurrentIndex = mQuestionsBank.length - 1;
-                        }
-                        else {
+                        } else {
                             mCurrentIndex = (mCurrentIndex - 1) % mQuestionsBank.length;
                         }
                         updateQuestion();
@@ -110,10 +107,9 @@ public class QuizActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(mCurrentIndex == 0){
+                        if (mCurrentIndex == 0) {
                             mCurrentIndex = mQuestionsBank.length - 1;
-                        }
-                        else {
+                        } else {
                             mCurrentIndex = (mCurrentIndex - 1) % mQuestionsBank.length;
                         }
                         updateQuestion();
@@ -130,7 +126,6 @@ public class QuizActivity extends AppCompatActivity {
                 }
         );
 
-
         updateQuestion();
     }
 
@@ -144,30 +139,36 @@ public class QuizActivity extends AppCompatActivity {
         int question = mQuestionsBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
 
-            if(mFlag[mCurrentIndex]){
+        if (mFlag[mCurrentIndex]) {
 
-                mFalseButton.setEnabled(false);
-                mTrueButton.setEnabled(false);
+            mFalseButton.setEnabled(false);
+            mTrueButton.setEnabled(false);
 
-                //mPointsTextView.setText("Clicked button is " + Boolean.toString(mClikedFlag[mCurrentIndex]));
-                //mPointsTextView.setEnabled(true);
-                //mPointsTextView.show();
+        } else {
 
-            }
+            mFalseButton.setEnabled(true);
+            mTrueButton.setEnabled(true);
+
+        }
+        if (mClickedPoint == mQuestionsBank.length) {
+            mPointsTextView = (TextView) findViewById(R.id.ClickedButton);
+            mPointsTextView.setText("Your score : " + Integer.toString(mClickedPoint));
+            mPointsTextView.setEnabled(true);
+        }
     }
 
     private void checkAnswer(boolean userPressedTrue) {
-
         String toastMessageId = "Question is answered";
 
+        mClickedPoint++;
         if ((userPressedTrue == mQuestionsBank[mCurrentIndex].isAnswerTrue()) && (mFlag[mCurrentIndex] == false)) {
-                toastMessageId = "Correct answer";
-                mPoints++;
-                mFlag[mCurrentIndex] = true;
+            toastMessageId = "Correct answer";
+            mPoints++;
+            mFlag[mCurrentIndex] = true;
         } else {
-                toastMessageId = "Incorrect answer";
-                mPoints--;
-                mFlag[mCurrentIndex] = true;
+            toastMessageId = "Incorrect answer";
+            mPoints--;
+            mFlag[mCurrentIndex] = true;
         }
 
         Toast toast = Toast.makeText(this, toastMessageId, Toast.LENGTH_SHORT);
