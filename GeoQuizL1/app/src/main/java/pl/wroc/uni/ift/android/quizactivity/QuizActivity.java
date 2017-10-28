@@ -1,35 +1,29 @@
 package pl.wroc.uni.ift.android.quizactivity;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
-
+    public static int mTokens = 2;
     private Button mTrueButton;
     private Button mFalseButton;
-    private Button mNextButton;
-    private Button mPrevButton;
-
-    private ImageButton mPrevImgButton;
 
     // na potrzeby własne
     private boolean[] mFlag;
+    private Button mCheatButton;
     private int mClickedPoint;
     private int mCurrentIndex = 0;
     private int mPoints = 0;
-
-    private TextView mPointsTextView;
-    private TextView mAPILevel;
     private TextView mQuestionTextView;
-
+    private TextView mPointsTextView;
     private Question[] mQuestionsBank = new Question[]{
             new Question(R.string.question_stolica_polski, true),
             new Question(R.string.question_stolica_dolnego_slaska, false),
@@ -42,6 +36,9 @@ public class QuizActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
+        Button mNextButton;
+        Button mPrevButton;
+        TextView mAPILevel;
         mFlag = new boolean[mQuestionsBank.length];
 
         setTitle(R.string.app_name);
@@ -52,6 +49,7 @@ public class QuizActivity extends AppCompatActivity {
             mPoints = savedInstanceState.getInt("points");
             mClickedPoint = savedInstanceState.getInt("clickedpoint");
             mFlag = savedInstanceState.getBooleanArray("flag");
+            mTokens = savedInstanceState.getInt("token");
         }
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
@@ -101,19 +99,18 @@ public class QuizActivity extends AppCompatActivity {
                     }
                 });
 
-        mPrevImgButton = (ImageButton) findViewById(R.id.previous_img_button);
-        mPrevImgButton.setOnClickListener(
+        mCheatButton = (Button) findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (mCurrentIndex == 0) {
-                            mCurrentIndex = mQuestionsBank.length - 1;
-                        } else {
-                            mCurrentIndex = (mCurrentIndex - 1) % mQuestionsBank.length;
-                        }
                         updateQuestion();
+                        boolean currentAnswer = mQuestionsBank[mCurrentIndex].isAnswerTrue();
+                        Intent intent = CheatActivity.newIntent(QuizActivity.this, currentAnswer);
+                        startActivityForResult(intent, mTokens);
                     }
-                });
+                }
+        );
 
         mQuestionTextView.setOnClickListener(
                 new View.OnClickListener() {
@@ -138,12 +135,16 @@ public class QuizActivity extends AppCompatActivity {
         outState.putInt("points", mPoints);
         outState.putBooleanArray("flag", mFlag);
         outState.putInt("clickedpoint", mClickedPoint);
+        outState.putInt("token", mTokens);
         super.onSaveInstanceState(outState);
     }
 
     private void updateQuestion() {
         int question = mQuestionsBank[mCurrentIndex].getTextResId();
 
+        if (mTokens <= 0) {
+            mCheatButton.setVisibility(View.INVISIBLE);
+        }
 
         mQuestionTextView.setText(question);
 
@@ -166,20 +167,20 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void checkAnswer(boolean userPressedTrue) {
-        String toastMessageId = "Question is answered";
-
         mClickedPoint++;
         if ((userPressedTrue == mQuestionsBank[mCurrentIndex].isAnswerTrue()) && (mFlag[mCurrentIndex] == false)) {
-            toastMessageId = "Correct answer";
+            showToast("Correct answer");
             mPoints++;
             mFlag[mCurrentIndex] = true;
         } else {
-            toastMessageId = "Incorrect answer";
+            showToast("Incorrect answer");
             mPoints--;
             mFlag[mCurrentIndex] = true;
         }
+    }
 
-        Toast toast = Toast.makeText(this, toastMessageId, Toast.LENGTH_SHORT);
+    private void showToast(String text) {
+        Toast toast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, -500);
         toast.show();
     }

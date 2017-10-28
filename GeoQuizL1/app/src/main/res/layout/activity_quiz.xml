@@ -123,14 +123,13 @@ This means, in which direction it's contents should align.
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/previous_img_button"
+    <Button
+        android:id="@+id/cheat_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawablePadding="6dp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/arrow_left"/>
+        android:text="Cheat"/>
 
     <TextView
         android:layout_width="wrap_content"
