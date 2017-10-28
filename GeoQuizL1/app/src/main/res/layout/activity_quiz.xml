@@ -132,4 +132,11 @@ This means, in which direction it's contents should align.
         android:layout_centerHorizontal="true"
         android:src="@drawable/arrow_left"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="24dp"
+        android:id="@+id/APILEVEL"
+        android:text=""/>
+
 </LinearLayout>

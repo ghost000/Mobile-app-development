@@ -1,5 +1,6 @@
 package pl.wroc.uni.ift.android.quizactivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
@@ -20,11 +21,13 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mPrevImgButton;
 
     // na potrzeby własne
-    private int mPoints = 0;
     private boolean[] mFlag;
     private int mClickedPoint;
-    private TextView mPointsTextView;
+    private int mCurrentIndex = 0;
+    private int mPoints = 0;
 
+    private TextView mPointsTextView;
+    private TextView mAPILevel;
     private TextView mQuestionTextView;
 
     private Question[] mQuestionsBank = new Question[]{
@@ -34,12 +37,6 @@ public class QuizActivity extends AppCompatActivity {
             new Question(R.string.question_wisla, true)
     };
 
-    private int mCurrentIndex = 0;
-
-    //    Bundles are generally used for passing data between various Android activities.
-    //    It depends on you what type of values you want to pass, but bundles can hold all
-    //    types of values and pass them to the new activity.
-    //    see: https://stackoverflow.com/questions/4999991/what-is-a-bundle-in-an-android-application
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -48,11 +45,13 @@ public class QuizActivity extends AppCompatActivity {
         mFlag = new boolean[mQuestionsBank.length];
 
         setTitle(R.string.app_name);
-        // inflating view objects
         setContentView(R.layout.activity_quiz);
 
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt("index");
+            mPoints = savedInstanceState.getInt("points");
+            mClickedPoint = savedInstanceState.getInt("clickedpoint");
+            mFlag = savedInstanceState.getBooleanArray("flag");
         }
 
         mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
@@ -126,17 +125,26 @@ public class QuizActivity extends AppCompatActivity {
                 }
         );
 
+        mAPILevel = (TextView) findViewById(R.id.APILEVEL);
+        mAPILevel.setText(" Android Version : " + Build.VERSION.RELEASE + " and API Level : " + Build.VERSION.SDK);
+
         updateQuestion();
+
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putInt("index", mCurrentIndex);
+        outState.putInt("points", mPoints);
+        outState.putBooleanArray("flag", mFlag);
+        outState.putInt("clickedpoint", mClickedPoint);
         super.onSaveInstanceState(outState);
     }
 
     private void updateQuestion() {
         int question = mQuestionsBank[mCurrentIndex].getTextResId();
+
+
         mQuestionTextView.setText(question);
 
         if (mFlag[mCurrentIndex]) {
@@ -152,7 +160,7 @@ public class QuizActivity extends AppCompatActivity {
         }
         if (mClickedPoint == mQuestionsBank.length) {
             mPointsTextView = (TextView) findViewById(R.id.ClickedButton);
-            mPointsTextView.setText("Your score : " + Integer.toString(mClickedPoint));
+            mPointsTextView.setText("Your score : " + Integer.toString(mPoints));
             mPointsTextView.setEnabled(true);
         }
     }
