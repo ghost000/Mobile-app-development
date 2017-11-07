@@ -24,12 +24,7 @@ public class QuizActivity extends AppCompatActivity {
     private int mPoints = 0;
     private TextView mQuestionTextView;
     private TextView mPointsTextView;
-    private Question[] mQuestionsBank = new Question[]{
-            new Question(R.string.question_stolica_polski, true),
-            new Question(R.string.question_stolica_dolnego_slaska, false),
-            new Question(R.string.question_sniezka, true),
-            new Question(R.string.question_wisla, true)
-    };
+    private QuestionBank mQuestionsBank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +34,8 @@ public class QuizActivity extends AppCompatActivity {
         Button mNextButton;
         Button mPrevButton;
         TextView mAPILevel;
-        mFlag = new boolean[mQuestionsBank.length];
+        mQuestionsBank = QuestionBank.getInstance();
+        mFlag = new boolean[mQuestionsBank.size()];
 
         setTitle(R.string.app_name);
         setContentView(R.layout.activity_quiz);
@@ -80,7 +76,7 @@ public class QuizActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mCurrentIndex = (mCurrentIndex + 1) % mQuestionsBank.length;
+                        mCurrentIndex = (mCurrentIndex + 1) % mQuestionsBank.size();
                         updateQuestion();
                     }
                 });
@@ -91,9 +87,9 @@ public class QuizActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         if (mCurrentIndex == 0) {
-                            mCurrentIndex = mQuestionsBank.length - 1;
+                            mCurrentIndex = mQuestionsBank.size() - 1;
                         } else {
-                            mCurrentIndex = (mCurrentIndex - 1) % mQuestionsBank.length;
+                            mCurrentIndex = (mCurrentIndex - 1) % mQuestionsBank.size();
                         }
                         updateQuestion();
                     }
@@ -105,7 +101,7 @@ public class QuizActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         updateQuestion();
-                        boolean currentAnswer = mQuestionsBank[mCurrentIndex].isAnswerTrue();
+                        boolean currentAnswer = mQuestionsBank.getQuestion(mCurrentIndex).isAnswerTrue()--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------;
                         Intent intent = CheatActivity.newIntent(QuizActivity.this, currentAnswer);
                         startActivityForResult(intent, mTokens);
                     }
@@ -116,7 +112,7 @@ public class QuizActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mCurrentIndex = (mCurrentIndex + 1) % mQuestionsBank.length;
+                        mCurrentIndex = (mCurrentIndex + 1) % mQuestionsBank.size();
                         updateQuestion();
                     }
                 }
@@ -140,7 +136,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void updateQuestion() {
-        int question = mQuestionsBank[mCurrentIndex].getTextResId();
+        int question = mQuestionsBank.getQuestion(mCurrentIndex).getTextResId();
 
         if (mTokens <= 0) {
             mCheatButton.setVisibility(View.INVISIBLE);
@@ -159,7 +155,7 @@ public class QuizActivity extends AppCompatActivity {
             mTrueButton.setEnabled(true);
 
         }
-        if (mClickedPoint == mQuestionsBank.length) {
+        if (mClickedPoint == mQuestionsBank.size()) {
             mPointsTextView = (TextView) findViewById(R.id.ClickedButton);
             mPointsTextView.setText("Your score : " + Integer.toString(mPoints));
             mPointsTextView.setEnabled(true);
@@ -168,7 +164,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private void checkAnswer(boolean userPressedTrue) {
         mClickedPoint++;
-        if ((userPressedTrue == mQuestionsBank[mCurrentIndex].isAnswerTrue()) && (mFlag[mCurrentIndex] == false)) {
+        if ((userPressedTrue == mQuestionsBank.getQuestion(mCurrentIndex).isAnswerTrue()) && (mFlag[mCurrentIndex] == false)) {
             showToast("Correct answer");
             mPoints++;
             mFlag[mCurrentIndex] = true;
