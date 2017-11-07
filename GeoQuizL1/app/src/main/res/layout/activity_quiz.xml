@@ -56,12 +56,12 @@ This means, in which direction it's contents should align.
     for padding units
     -->
     <TextView
+        android:id="@+id/ClickedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:padding="24dp"
-        android:id="@+id/ClickedButton"
-        android:text=""
-        android:enabled="false"/>
+        android:text="" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -111,7 +111,7 @@ This means, in which direction it's contents should align.
             android:layout_height="wrap_content"
             android:drawablePadding="6dp"
             android:drawableRight="@drawable/arrow_left"
-            android:text="Poprzedni"/>
+            android:text="Poprzedni" />
 
         <Button
             android:id="@+id/next_button"
@@ -127,15 +127,23 @@ This means, in which direction it's contents should align.
         android:id="@+id/cheat_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:text="Cheat"/>
+        android:layout_centerVertical="true"
+        android:text="Cheat" />
 
     <TextView
+        android:id="@+id/APILEVEL"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="24dp"
-        android:id="@+id/APILEVEL"
-        android:text=""/>
+        android:text="" />
+
+    <Button
+        android:id="@+id/questions_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Questions" />
 
 </LinearLayout>

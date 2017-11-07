@@ -19,6 +19,7 @@ public class QuizActivity extends AppCompatActivity {
     // na potrzeby własne
     private boolean[] mFlag;
     private Button mCheatButton;
+    private Button mQuestionsButton;
     private int mClickedPoint;
     private int mCurrentIndex = 0;
     private int mPoints = 0;
@@ -104,6 +105,18 @@ public class QuizActivity extends AppCompatActivity {
                         boolean currentAnswer = mQuestionsBank.getQuestion(mCurrentIndex).isAnswerTrue();
                         Intent intent = CheatActivity.newIntent(QuizActivity.this, currentAnswer);
                         startActivityForResult(intent, mTokens);
+                    }
+                }
+        );
+
+        mQuestionsButton = (Button) findViewById(R.id.questions_button);
+        mQuestionsButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        updateQuestion();
+                        Intent intent = RecyclerActivity.newIntent(QuizActivity.this);
+                        startActivity(intent);
                     }
                 }
         );

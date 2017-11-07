@@ -10,12 +10,10 @@ import java.util.List;
 public class QuestionBank {
     private static QuestionBank instance = null;
 
-    private static List<Question> mQuestionsBank;
+    private List<Question> mQuestionsBank;
 
     protected QuestionBank() {
-    }
 
-    private static void setUp() {
         mQuestionsBank = new ArrayList<>();
         mQuestionsBank.add(new Question(R.string.question_stolica_polski, true));
         mQuestionsBank.add(new Question(R.string.question_stolica_dolnego_slaska, false));
@@ -25,8 +23,6 @@ public class QuestionBank {
 
     public static QuestionBank getInstance() {
         if (instance == null) {
-            setUp();
-
             instance = new QuestionBank();
         }
         return instance;
