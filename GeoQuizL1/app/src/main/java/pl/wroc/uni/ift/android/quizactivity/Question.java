@@ -9,9 +9,9 @@ public class Question {
     private int mTextResId;
     private boolean mAnswerTrue;
 
-    public Question(int textResId, boolean answerTrue)    {
+    public Question(int textResId, boolean answerTrue) {
 
-        mTextResId=textResId;
+        mTextResId = textResId;
         mAnswerTrue = answerTrue;
     }
 

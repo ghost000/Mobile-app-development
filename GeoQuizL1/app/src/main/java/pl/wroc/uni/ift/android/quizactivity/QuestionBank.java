@@ -10,10 +10,9 @@ import java.util.List;
 public class QuestionBank {
     private static QuestionBank instance = null;
 
-    private List<Question> mQuestionsBank;
+    private ArrayList<Question> mQuestionsBank;
 
     protected QuestionBank() {
-
         mQuestionsBank = new ArrayList<>();
         mQuestionsBank.add(new Question(R.string.question_stolica_polski, true));
         mQuestionsBank.add(new Question(R.string.question_stolica_dolnego_slaska, false));
@@ -28,7 +27,7 @@ public class QuestionBank {
         return instance;
     }
 
-    public List<Question> getQuestions() {
+    public ArrayList<Question> getQuestions() {
         return mQuestionsBank;
     }
 
