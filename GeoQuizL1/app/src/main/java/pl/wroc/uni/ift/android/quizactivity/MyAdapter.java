@@ -7,16 +7,29 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by neo on 07/11/17.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter {
 
     private ArrayList<Question> mDataset = new ArrayList<>();
     private RecyclerView mRecyclerView;
+
+    @Override
+    public int getItemCount() {
+        return mDataset.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView mTextView;
+
+        public ViewHolder(View v) {
+            super(v);
+            mTextView = (TextView) v.findViewById(R.id.question);
+        }
+    }
 
     public MyAdapter(ArrayList<Question> pDataset, RecyclerView pRecyclerView) {
         mDataset = pDataset;
@@ -31,21 +44,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.mTextView.setText(mDataset.get(position).toString());
-    }
-
-    @Override
-    public int getItemCount() {
-        return mDataset.size();
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView mTextView;
-
-        public ViewHolder(View v) {
-            super(v);
-            mTextView = (TextView) v.findViewById(R.id.question);
-        }
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+        (( ViewHolder) holder).mTextView.setText(mDataset.get(position).getTextResId());
     }
 }

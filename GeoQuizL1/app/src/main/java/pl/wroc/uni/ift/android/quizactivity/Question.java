@@ -4,7 +4,7 @@ package pl.wroc.uni.ift.android.quizactivity;
  * Created by jpola on 26.07.17.
  */
 
-public class Question {
+public class Question  {
 
     private int mTextResId;
     private boolean mAnswerTrue;

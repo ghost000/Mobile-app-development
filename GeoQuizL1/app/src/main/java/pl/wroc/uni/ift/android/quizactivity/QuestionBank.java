@@ -20,7 +20,7 @@ public class QuestionBank {
         mQuestionsBank.add(new Question(R.string.question_wisla, true));
     }
 
-    public static QuestionBank getInstance() {
+    public static synchronized QuestionBank getInstance() {
         if (instance == null) {
             instance = new QuestionBank();
         }

@@ -14,7 +14,7 @@ public class RecyclerActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
 
     public static Intent newIntent(Context context) {
-        return new Intent(context, CheatActivity.class);
+        return new Intent(context, RecyclerActivity.class);
     }
 
     @Override
@@ -28,10 +28,6 @@ public class RecyclerActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        ArrayList<Question> articles = new ArrayList<>();
-        for (int i = 0; i < 3; ++i)
-            articles.add(QuestionBank.getInstance().getQuestion(i));
-
-        mRecyclerView.setAdapter(new MyAdapter(articles, mRecyclerView));
+        mRecyclerView.setAdapter(new MyAdapter(QuestionBank.getInstance().getQuestions(), mRecyclerView));
     }
 }
