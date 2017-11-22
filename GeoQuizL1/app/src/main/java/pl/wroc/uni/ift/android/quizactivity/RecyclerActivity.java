@@ -1,5 +1,6 @@
 package pl.wroc.uni.ift.android.quizactivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ public class RecyclerActivity extends AppCompatActivity {
         return new Intent(context, RecyclerActivity.class);
     }
 
+    //@SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

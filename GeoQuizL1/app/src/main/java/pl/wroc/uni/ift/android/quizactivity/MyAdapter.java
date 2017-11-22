@@ -38,7 +38,7 @@ public class MyAdapter extends RecyclerView.Adapter {
 
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_recycler, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.question_layout, parent, false);
 
         return new ViewHolder(view);
     }
